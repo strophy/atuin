@@ -1,0 +1,11 @@
+load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
+
+gazelle(
+    name = "gazelle",
+    args = ["-build_file_name=BUILD.bazel"],
+    gazelle = "@gazelle_rust//:gazelle_bin",
+)
+
+# gazelle:rust_cargo_lockfile Cargo.lock
+# gazelle:rust_crates_prefix @crates//:
+# gazelle:rust_mode generate_from_cargo

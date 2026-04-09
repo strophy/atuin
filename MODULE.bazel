@@ -1,0 +1,27 @@
+bazel_dep(name = "rules_rust", version = "0.69.0")
+bazel_dep(name = "gazelle", version = "0.50.0")
+bazel_dep(name = "gazelle_rust", version = "0.1.0")
+
+# gazelle_rust has no BCR release yet, so you must use archive_override:
+GAZELLE_RUST_COMMIT = "62dace6f23b648f662d716723ab8eee2aab4b556"
+GAZELLE_RUST_SHA256 = "sha256-hBRio+mTB/kGEcngeZtqIjJ/VvSh+JxkoIj6VVVS6cE="
+
+archive_override(
+    module_name = "gazelle_rust",
+    integrity = GAZELLE_RUST_SHA256,
+    strip_prefix = "gazelle_rust-{}".format(GAZELLE_RUST_COMMIT),
+    url = "https://github.com/Calsign/gazelle_rust/archive/{}.zip".format(GAZELLE_RUST_COMMIT),
+)
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(edition = "2024")
+use_repo(rust, "rust_toolchains")
+register_toolchains("@rust_toolchains//:all")
+
+crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+crate.from_cargo(
+    name = "crates",
+    cargo_lockfile = "//:Cargo.lock",
+    manifests = ["//:Cargo.toml"],
+)
+use_repo(crate, "crates")
