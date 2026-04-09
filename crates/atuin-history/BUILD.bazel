@@ -1,0 +1,44 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_history",
+    srcs = [
+        "src/lib.rs",
+        "src/sort.rs",
+        "src/stats.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-client:atuin_client",
+        "@crates//:crossterm",
+        "@crates//:serde",
+        "@crates//:time",
+        "@crates//:unicode-segmentation",
+    ],
+)
+
+rust_binary(
+    name = "smart_sort",
+    srcs = ["benches/smart_sort.rs"],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    tags = ["bench"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":atuin_history",
+        "//crates/atuin-client:atuin_client",
+        "@crates//:divan",
+        "@crates//:rand",
+        "@crates//:time",
+    ],
+)
+
+rust_test(
+    name = "atuin_history_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_history",
+    edition = "2024",
+    deps = ["@crates//:time"],
+)

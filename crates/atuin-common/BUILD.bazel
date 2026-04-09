@@ -1,0 +1,38 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_common",
+    srcs = [
+        "src/api.rs",
+        "src/lib.rs",
+        "src/record.rs",
+        "src/shell.rs",
+        "src/tls.rs",
+        "src/utils.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:base64",
+        "@crates//:directories",
+        "@crates//:eyre",
+        "@crates//:getrandom",
+        "@crates//:rustls",
+        "@crates//:semver",
+        "@crates//:serde",
+        "@crates//:sysinfo",
+        "@crates//:thiserror",
+        "@crates//:time",
+        "@crates//:typed-builder",
+        "@crates//:uuid",
+    ],
+)
+
+rust_test(
+    name = "atuin_common_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_common",
+    edition = "2024",
+    deps = ["@crates//:pretty_assertions"],
+)

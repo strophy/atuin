@@ -1,0 +1,29 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_nucleo",
+    srcs = [
+        "src/boxcar.rs",
+        "src/lib.rs",
+        "src/par_sort.rs",
+        "src/pattern.rs",
+        "src/pattern/tests.rs",
+        "src/tests.rs",
+        "src/worker.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-nucleo/matcher:atuin_nucleo_matcher",
+        "@crates//:parking_lot",
+        "@crates//:rayon",
+    ],
+)
+
+rust_test(
+    name = "atuin_nucleo_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_nucleo",
+    edition = "2021",
+)

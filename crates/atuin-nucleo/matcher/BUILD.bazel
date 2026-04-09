@@ -1,0 +1,48 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_nucleo_matcher",
+    srcs = [
+        "src/chars.rs",
+        "src/chars/case_fold.rs",
+        "src/chars/normalize.rs",
+        "src/config.rs",
+        "src/debug.rs",
+        "src/exact.rs",
+        "src/fuzzy_greedy.rs",
+        "src/fuzzy_optimal.rs",
+        "src/lib.rs",
+        "src/matrix.rs",
+        "src/pattern.rs",
+        "src/pattern/tests.rs",
+        "src/prefilter.rs",
+        "src/score.rs",
+        "src/tests.rs",
+        "src/utf32_str.rs",
+        "src/utf32_str/tests.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    crate_features = [
+        "unicode-casefold",
+        "unicode-normalization",
+        "unicode-segmentation",
+    ],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:memchr",
+        "@crates//:unicode-segmentation",
+    ],
+)
+
+rust_test(
+    name = "atuin_nucleo_matcher_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_nucleo_matcher",
+    crate_features = [
+        "unicode-casefold",
+        "unicode-normalization",
+        "unicode-segmentation",
+    ],
+    edition = "2021",
+)

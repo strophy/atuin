@@ -1,0 +1,27 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_hex",
+    srcs = [
+        "src/lib.rs",
+        "src/osc133.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:clap",
+        "@crates//:crossterm",
+        "@crates//:eyre",
+        "@crates//:portable-pty",
+        "@crates//:signal-hook",
+        "@crates//:vt100",
+    ],
+)
+
+rust_test(
+    name = "atuin_hex_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_hex",
+    edition = "2024",
+)

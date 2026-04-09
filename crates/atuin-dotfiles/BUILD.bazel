@@ -1,0 +1,39 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_dotfiles",
+    srcs = [
+        "src/lib.rs",
+        "src/shell.rs",
+        "src/shell/bash.rs",
+        "src/shell/fish.rs",
+        "src/shell/powershell.rs",
+        "src/shell/xonsh.rs",
+        "src/shell/zsh.rs",
+        "src/store.rs",
+        "src/store/alias.rs",
+        "src/store/var.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-client:atuin_client",
+        "//crates/atuin-common:atuin_common",
+        "@crates//:eyre",
+        "@crates//:rmp",
+        "@crates//:serde",
+        "@crates//:tokio",
+    ],
+)
+
+rust_test(
+    name = "atuin_dotfiles_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_dotfiles",
+    edition = "2024",
+    deps = [
+        "@crates//:crypto_secretbox",
+        "@crates//:rand",
+    ],
+)

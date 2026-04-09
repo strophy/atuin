@@ -1,0 +1,33 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_kv",
+    srcs = [
+        "src/database.rs",
+        "src/lib.rs",
+        "src/store.rs",
+        "src/store/entry.rs",
+        "src/store/record.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-client:atuin_client",
+        "//crates/atuin-common:atuin_common",
+        "@crates//:eyre",
+        "@crates//:rmp",
+        "@crates//:sqlx",
+        "@crates//:tokio",
+        "@crates//:tracing",
+        "@crates//:typed-builder",
+    ],
+)
+
+rust_test(
+    name = "atuin_kv_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_kv",
+    edition = "2024",
+    deps = ["@crates//:tokio"],
+)

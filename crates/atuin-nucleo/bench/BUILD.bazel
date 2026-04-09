@@ -1,0 +1,15 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary")
+
+rust_binary(
+    name = "atuin-nucleo-bench",
+    srcs = ["src/main.rs"],
+    compile_data = ["Cargo.toml"],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-nucleo:atuin_nucleo",
+        "@crates//:brunch",
+        "@crates//:fuzzy-matcher",
+        "@crates//:walkdir",
+    ],
+)

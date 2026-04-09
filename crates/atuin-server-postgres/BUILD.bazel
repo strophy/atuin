@@ -1,0 +1,42 @@
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_server_postgres",
+    srcs = [
+        "src/lib.rs",
+        "src/wrappers.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    proc_macro_deps = ["@crates//:async-trait"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":build_script",
+        "//crates/atuin-common:atuin_common",
+        "//crates/atuin-server-database:atuin_server_database",
+        "@crates//:eyre",
+        "@crates//:futures-util",
+        "@crates//:rand",
+        "@crates//:sqlx",
+        "@crates//:time",
+        "@crates//:tracing",
+        "@crates//:uuid",
+    ],
+)
+
+cargo_build_script(
+    name = "build_script",
+    srcs = ["build.rs"],
+    compile_data = ["Cargo.toml"],
+    crate_root = "build.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+)
+
+rust_test(
+    name = "atuin_server_postgres_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_server_postgres",
+    edition = "2024",
+)

@@ -1,0 +1,38 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_scripts",
+    srcs = [
+        "src/database.rs",
+        "src/execution.rs",
+        "src/lib.rs",
+        "src/settings.rs",
+        "src/store.rs",
+        "src/store/record.rs",
+        "src/store/script.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-client:atuin_client",
+        "//crates/atuin-common:atuin_common",
+        "@crates//:eyre",
+        "@crates//:minijinja",
+        "@crates//:rmp",
+        "@crates//:serde_json",
+        "@crates//:sqlx",
+        "@crates//:tempfile",
+        "@crates//:tokio",
+        "@crates//:tracing",
+        "@crates//:typed-builder",
+        "@crates//:uuid",
+    ],
+)
+
+rust_test(
+    name = "atuin_scripts_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_scripts",
+    edition = "2024",
+)

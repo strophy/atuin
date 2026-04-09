@@ -1,0 +1,77 @@
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_daemon",
+    srcs = [
+        "src/client.rs",
+        "src/components/history.rs",
+        "src/components/mod.rs",
+        "src/components/search.rs",
+        "src/components/sync.rs",
+        "src/control/mod.rs",
+        "src/control/service.rs",
+        "src/daemon.rs",
+        "src/events.rs",
+        "src/history/mod.rs",
+        "src/lib.rs",
+        "src/search/index.rs",
+        "src/search/mod.rs",
+        "src/server.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":build_script",
+        "//crates/atuin-client:atuin_client",
+        "//crates/atuin-common:atuin_common",
+        "//crates/atuin-dotfiles:atuin_dotfiles",
+        "//crates/atuin-nucleo:atuin_nucleo",
+        "@crates//:dashmap",
+        "@crates//:eyre",
+        "@crates//:hyper-util",
+        "@crates//:lasso",
+        "@crates//:rand",
+        "@crates//:time",
+        "@crates//:tokio",
+        "@crates//:tokio-stream",
+        "@crates//:tonic",
+        "@crates//:tower",
+        "@crates//:tracing",
+        "@crates//:uuid",
+    ],
+)
+
+rust_test(
+    name = "lifecycle",
+    srcs = ["tests/lifecycle.rs"],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+)
+
+cargo_build_script(
+    name = "build_script",
+    srcs = ["build.rs"],
+    compile_data = [
+        "Cargo.toml",
+        "proto/history.proto",
+        "proto/search.proto",
+        "proto/control.proto",
+    ],
+    crate_root = "build.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@crates//:protox",
+        "@crates//:tonic-prost-build",
+        ],
+)
+
+rust_test(
+    name = "atuin_daemon_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_daemon",
+    edition = "2024",
+)

@@ -1,0 +1,49 @@
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
+
+rust_library(
+    name = "atuin_ai",
+    srcs = [
+        "src/commands.rs",
+        "src/commands/init.rs",
+        "src/commands/inline.rs",
+        "src/lib.rs",
+        "src/tui/app.rs",
+        "src/tui/event.rs",
+        "src/tui/mod.rs",
+        "src/tui/render.rs",
+        "src/tui/spinner.rs",
+        "src/tui/state.rs",
+        "src/tui/terminal.rs",
+        "src/tui/view_model.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-client:atuin_client",
+        "//crates/atuin-common:atuin_common",
+        "@crates//:async-stream",
+        "@crates//:clap",
+        "@crates//:crossterm",
+        "@crates//:eventsource-stream",
+        "@crates//:eyre",
+        "@crates//:futures",
+        "@crates//:pulldown-cmark",
+        "@crates//:ratatui",
+        "@crates//:reqwest",
+        "@crates//:serde_json",
+        "@crates//:tokio",
+        "@crates//:tracing",
+        "@crates//:tracing-appender",
+        "@crates//:tracing-subscriber",
+        "@crates//:unicode-width",
+        "@crates//:uuid",
+    ],
+)
+
+rust_test(
+    name = "atuin_ai_test",
+    compile_data = ["Cargo.toml"],
+    crate = ":atuin_ai",
+    edition = "2024",
+)

@@ -1,0 +1,22 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+rust_library(
+    name = "atuin_server_database",
+    srcs = [
+        "src/calendar.rs",
+        "src/lib.rs",
+        "src/models.rs",
+    ],
+    compile_data = ["Cargo.toml"],
+    edition = "2024",
+    proc_macro_deps = ["@crates//:async-trait"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/atuin-common:atuin_common",
+        "@crates//:eyre",
+        "@crates//:serde",
+        "@crates//:time",
+        "@crates//:tracing",
+        "@crates//:url",
+    ],
+)

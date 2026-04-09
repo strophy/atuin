@@ -1,0 +1,9 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary")
+
+rust_binary(
+    name = "fuzz_target_1",
+    srcs = ["fuzz_targets/fuzz_target_1.rs"],
+    compile_data = ["Cargo.toml"],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+)
